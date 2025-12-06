@@ -9,7 +9,7 @@ import Confetti from "react-confetti";
 export default function App() {
   const [currentWord, setCurrentWord] = React.useState(() => getRandomWord());
   const [guessArr, setGuessArr] = React.useState([]);
-  const [farewellLanguage, setFarewellLanguage] = React.useState(null);
+  const [farewellText, setFarewellText] = React.useState(null);
 
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -33,14 +33,15 @@ export default function App() {
       setGuessArr((prev) => [...prev, letter]);
     }
     if (!currentWord.includes(letter)) {
-      setFarewellLanguage(languages[wrongGuessCount].name);
+      const lang = languages[wrongGuessCount].name;
+      setFarewellText(getFarewellText(lang));
     }
   }
 
   function handleNewGame() {
     setCurrentWord(getRandomWord());
     setGuessArr([]);
-    setFarewellLanguage(null);
+    setFarewellText(null);
   }
 
   React.useEffect(() => {
@@ -101,13 +102,13 @@ export default function App() {
       {isGameOver && !isGameLost ? <Confetti /> : null}
       <Header />
       <main>
-        {farewellLanguage && !isGameOver ? (
+        {farewellText && !isGameOver ? (
           <section
             aria-live="polite"
             role="farewell text"
             className="farewell-text"
           >
-            {getFarewellText(farewellLanguage)}
+            {farewellText}
           </section>
         ) : (
           <section
